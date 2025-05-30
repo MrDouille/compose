@@ -1,10 +1,10 @@
 services:
   filebrowser:
     image: filebrowser/filebrowser  # Image officielle de Filebrowser
-    container_name: bambu-files     # Nom du conteneur (modifiable selon ton organisation)
+    container_name: filebrowser     # Nom du conteneur (modifiable selon ton organisation)
 
     volumes:
-      - /chemin/local/bambu/3MF:/srv  # Répertoire partagé avec Filebrowser (ici des fichiers .3MF)
+      - /chemin/local/fichier:/srv  # Répertoire partagé avec Filebrowser
 
     ports:
       - "8016:80"  # Port d’accès à l’interface web de Filebrowser

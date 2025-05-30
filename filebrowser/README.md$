@@ -1,0 +1,66 @@
+# 🗂️ Filebrowser
+
+Ce dossier contient un fichier `docker-compose.yml` pour déployer **Filebrowser**, une interface web simple et rapide pour naviguer, gérer et partager des fichiers.  
+Dans ce cas, il est utilisé pour exposer un dossier contenant des fichiers `.3MF` (ex: modèles pour imprimantes Bambu Lab).
+
+---
+
+## 🚀 Lancer le conteneur
+
+Assurez-vous d’avoir installé [Docker](https://www.docker.com/) et [Docker Compose](https://docs.docker.com/compose/).
+
+```bash
+docker-compose up -d
+```
+
+---
+
+## ⚙️ Configuration
+
+### Volumes
+
+- `/chemin/local/bambu/3MF:/srv` : Répertoire partagé avec Filebrowser (ici pour des fichiers .3MF)
+
+### Ports exposés
+
+- `8016:80` → Interface Web (modifiable à votre convenance)
+
+### Variables d’environnement
+
+- `FB_AUTH_METHOD=noauth` : Désactive l’authentification  
+  ⚠️ **Attention** : ne pas utiliser sans protection réseau. À réserver à un usage local ou restreint.
+
+### Utilisateur
+
+- `user: "0:0"` : Le conteneur tourne en tant que root. À éviter si possible en production.
+
+### Réseau
+
+- `filebrowser_network` : Réseau Docker interne dédié à cette stack (non exposé à l’extérieur)
+
+---
+
+## 🔁 Politique de redémarrage
+
+```yaml
+restart: unless-stopped
+```
+
+---
+
+## 📍 Accès
+
+Une fois le conteneur lancé, ouvrez :
+
+```
+http://localhost:8016
+```
+
+> Aucune authentification ne sera demandée si `FB_AUTH_METHOD=noauth` est activé.
+
+---
+
+## 📚 Références
+
+- [Docker Hub - filebrowser/filebrowser](https://hub.docker.com/r/filebrowser/filebrowser)
+- [Documentation officielle](https://filebrowser.org/)
