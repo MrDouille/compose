@@ -1,0 +1,12 @@
+version: "2"  # Version compatible avec l'image utilisée
+
+services:
+  guacamole:
+    image: oznu/guacamole  # Image intégrée "tout-en-un" de Guacamole (serveur + client web)
+    container_name: guacamole  # Nom du conteneur
+
+    volumes:
+      - /chemin/local/guacamole:/config  # Volume pour stocker la configuration persistante
+
+    ports:
+      - 8080:8080  # Port d'accès à l’interface web (HTTP)

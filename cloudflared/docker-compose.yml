@@ -1,0 +1,11 @@
+version: "3.8"  # Version Docker Compose (à adapter selon ton environnement)
+
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest  # Image officielle du tunnel Cloudflare
+
+    command: >
+      tunnel --no-autoupdate run --token VOTRE_TOKEN_ICI
+      # Remplacez le jeton par une variable d’environnement ou un secret sécurisé
+
+    restart: always  # Redémarre automatiquement si le conteneur plante ou après un reboot

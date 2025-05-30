@@ -1,0 +1,22 @@
+services:
+  bambustudio:
+    image: lscr.io/linuxserver/bambustudio:latest  # Image maintenue par LinuxServer.io
+    container_name: bambustudio
+
+    security_opt:
+      - seccomp:unconfined  # Optionnel – désactive le profil seccomp par défaut (utile pour certaines fonctionnalités graphiques)
+
+    environment:
+      - PUID=1000          # ID utilisateur (à adapter à l'utilisateur local)
+      - PGID=1000          # ID groupe (à adapter)
+      - TZ=Etc/UTC         # Fuseau horaire du conteneur
+      - DARK_MODE=true     # Active le mode sombre dans l'interface (optionnel)
+
+    volumes:
+      - /chemin/local/bambu/config:/config  # Volume pour la persistance de la configuration
+
+    ports:
+      - 8383:3000  # Port d’accès HTTP à l’interface de Bambu Studio
+      - 8484:3001  # Port secondaire (WebSocket ou API locale selon les versions)
+
+    restart: unless-stopped  # Redémarre le conteneur sauf en cas d'arrêt manuel

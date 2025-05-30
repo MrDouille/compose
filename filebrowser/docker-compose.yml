@@ -1,0 +1,24 @@
+services:
+  filebrowser:
+    image: filebrowser/filebrowser  # Image officielle de Filebrowser
+    container_name: bambu-files     # Nom du conteneur (modifiable selon ton organisation)
+
+    volumes:
+      - /chemin/local/bambu/3MF:/srv  # Répertoire partagé avec Filebrowser (ici des fichiers .3MF)
+
+    ports:
+      - "8016:80"  # Port d’accès à l’interface web de Filebrowser
+
+    environment:
+      - FB_AUTH_METHOD=noauth  # Désactive l’authentification (⚠️ Attention : à utiliser uniquement dans un environnement sécurisé)
+
+    user: "0:0"  # Le conteneur tourne en tant que root (UID 0 / GID 0). À éviter si possible en prod.
+
+    restart: unless-stopped  # Redémarrage automatique sauf si le conteneur a été arrêté manuellement
+
+    networks:
+      - filebrowser_network  # Réseau Docker dédié (défini ci-dessous)
+
+networks:
+  filebrowser_network:
+    external: false  # Le réseau est interne à ce fichier Compose (pas un réseau Docker externe)

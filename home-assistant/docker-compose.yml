@@ -1,0 +1,19 @@
+version: "3.8"  # Version récente de Docker Compose
+
+services:
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:stable  # Image officielle de Home Assistant
+    container_name: homeassistant  # Nom du conteneur
+
+    volumes:
+      - /chemin/local/homeassistant:/config  # Configuration persistante (automations, intégrations, etc.)
+
+    environment:
+      - TZ=Europe/Paris  # Fuseau horaire du conteneur (à adapter si nécessaire)
+
+    ports:
+      - 8123:8123  # Port HTTP d'accès à l'interface web
+
+    restart: unless-stopped  # Redémarre automatiquement sauf en cas d'arrêt manuel
+
+    privileged: true  # Nécessaire pour accéder au matériel local (USB, Bluetooth, etc.)
