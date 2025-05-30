@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  portainer:
+    image: portainer/portainer-ce:latest   # Version communautaire de Portainer
+    container_name: portainer
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Accès au socket Docker (nécessaire)
+      - /chemin/local/portainer/data:/data         # Données persistantes
+
+    ports:
+      - 9000:9000  # Port WebUI de Portainer
+
+    restart: unless-stopped

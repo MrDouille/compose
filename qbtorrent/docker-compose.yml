@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  qbittorrent:
+    image: linuxserver/qbittorrent:latest  # Image LinuxServer officielle
+    container_name: qbittorrent
+
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - WEBUI_PORT=8080                      # Port WebUI interne
+
+    volumes:
+      - /chemin/local/qbittorrent/config:/config  # Configuration et données
+      - /chemin/local/qbittorrent/downloads:/downloads  # Dossier de téléchargement
+
+    ports:
+      - 8080:8080                # WebUI
+      - 6881:6881/tcp            # Port BitTorrent TCP
+      - 6881:6881/udp            # Port BitTorrent UDP (DHT)
+
+    restart: unless-stopped

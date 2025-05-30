@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  plex:
+    image: plexinc/pms-docker:latest  # Image officielle Plex Media Server
+    container_name: plex
+
+    environment:
+      - PLEX_CLAIM=                        # Optionnel : token de réclamation Plex (pour lier au compte)
+      - TZ=Etc/UTC                        # Fuseau horaire
+      - PLEX_UID=1000                     # UID utilisateur local pour permissions
+      - PLEX_GID=1000                     # GID groupe local
+
+    volumes:
+      - /chemin/local/plex/config:/config     # Configuration persistante de Plex
+      - /chemin/local/plex/tvshows:/data/tvshows    # Bibliothèque séries
+      - /chemin/local/plex/movies:/data/movies       # Bibliothèque films
+
+    ports:
+      - 32400:32400/tcp                  # Port principal Plex
+      - 3005:3005/tcp                    # Ports supplémentaires pour DLNA, etc.
+      - 8324:8324/tcp
+      - 32469:32469/tcp
+
+    restart: unless-stopped
