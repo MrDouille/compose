@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  code-server:
+    image: codercom/code-server  # Image officielle de VS Code accessible via navigateur
+    volumes:
+      - /path/to/code/data:/home/coder/project  # Volume de travail (projets, fichiers, etc.)
+    ports:
+      - "8080:8080"  # Port d’accès à l’interface Web de code-server
+    environment:
+      - PASSWORD=your_secure_password  # Mot de passe pour se connecter à l'interface (à remplacer)
+      - TZ=Europe/Paris  # Fuseau horaire du conteneur (modifié)

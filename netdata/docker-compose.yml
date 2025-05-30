@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  netdata:
+    image: netdata/netdata  # Image officielle Netdata (monitoring temps réel)
+    container_name: netdata
+    hostname: monitor.local  # Nom d’hôte visible dans l’interface Netdata (adapter à votre environnement)
+    ports:
+      - 19999:19999  # Interface Web de monitoring Netdata
+    restart: unless-stopped  # Redémarre automatiquement sauf arrêt manuel
+
+    cap_add:
+      - SYS_PTRACE  # Permet à Netdata de profiler les processus (nécessaire pour certaines métriques)
+
+    security_opt:
+      - apparmor:unconfined  # Contourne les restrictions AppArmor pour une supervision plus complète
+
+    volumes:
+      - /path/to/netdata/config:/etc/netdata:ro  # Fichiers de configuration Netdata (en lecture seule)
+      - netdatalib:/var/lib/netdata  # Données d'historique Netdata
+      - netdatacache:/var/cache/netdata  # Fichiers temporaires de cache
+      - /etc/passwd:/host/etc/passwd:ro  # Accès aux informations utilisateurs système
+      - /etc/group:/host/etc/group:ro
+      - /proc:/host/proc:ro  # Accès au système de fichiers proc (nécessaire pour les métriques système)
+      - /sys:/host/sys:ro
+      - /etc/os-release:/host/etc/os-release:ro  # Détection du système hôte
+
+volumes:
+  netdatalib:  # Volume pour données persistantes
+  netdatacache:  # Volume pour cache
