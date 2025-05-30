@@ -33,7 +33,7 @@ compose/
 1. Installe [Docker](https://docs.docker.com/get-docker/) et [Docker Compose](https://docs.docker.com/compose/install/)
 2. Clone ce dépôt :
    ```bash
-   git clone https://github.com/ton_pseudo/compose.git
+   git clone https://github.com/MrDouille/compose.git
    cd compose/nom_du_service
    ```
 3. Adapte les variables dans `.env` si présent
