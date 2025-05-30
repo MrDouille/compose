@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+  adguard:
+    container_name: adguard
+    image: adguard/adguardhome  # Image officielle d'AdGuard Home
+    restart: always  # Redémarre automatiquement en cas de crash ou au démarrage du système
+
+    labels:
+      - com.centurylinklabs.watchtower.enable=true  # Permet à Watchtower de surveiller ce conteneur pour des mises à jour
+
+    ports:
+      - "53:53/tcp"      # Port DNS TCP
+      - "53:53/udp"      # Port DNS UDP
+      - "853:853/tcp"    # Port DNS-over-TLS
+      - "9002:80/tcp"    # Accès HTTP à l'interface d'admin (port local générique remplacé)
+      - "9003:443/tcp"   # Accès HTTPS à l'interface (générique)
+      - "9004:3000/tcp"  # Port d'administration AdGuard (générique)
+
+    # Si vous utilisez AdGuard comme serveur DHCP, décommentez les lignes suivantes :
+    # - "67:67/udp"     # DHCP Server port
+    # - "68:68/tcp"
+    # - "68:68/udp"
+
+    volumes:
+      - /chemin/local/adguard/conf:/opt/adguardhome/conf     # Configuration persistante d'AdGuard
+      - /chemin/local/adguard/data:/opt/adguardhome/work     # Données de fonctionnement
+      - /chemin/local/adguard/certs:/opt/adguardhome/certs   # Certificats TLS/SSL (à définir aussi dans l'interface web)
