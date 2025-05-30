@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  pihole:
+    container_name: pihole  # Nom du conteneur (peut être personnalisé)
+    image: pihole/pihole:latest  # Image officielle de Pi-hole
+    hostname: pi.hole  # Nom réseau local (utile pour la résolution DNS interne)
+
+    ports:
+      - "53:53/tcp"   # Port DNS standard (TCP)
+      - "53:53/udp"   # Port DNS standard (UDP)
+      - "67:67/udp"   # Port DHCP (optionnel, utilisé si DHCP activé)
+      - "8080:80/tcp"   # Interface Web HTTP (port personnalisé, remplacez-le si nécessaire)
+      - "8443:443/tcp"  # Interface Web HTTPS (personnalisé aussi)
+
+    environment:
+      TZ: 'Europe/Paris'  # Fuseau horaire du conteneur
+
+    volumes:
+      - '/path/to/pihole/config:/etc/pihole/'         # Volume pour la configuration Pi-hole
+      - '/path/to/dnsmasq/config:/etc/dnsmasq.d/'     # Configuration DNSMasq persistante
+
+    cap_add:
+      - NET_ADMIN  # Nécessaire si vous utilisez la fonctionnalité DHCP de Pi-hole
+
+    restart: unless-stopped  # Redémarre automatiquement sauf arrêt manuel

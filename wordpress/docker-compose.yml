@@ -1,0 +1,31 @@
+version: '3.1'
+
+services:
+
+  wordpress:
+    image: wordpress  # Image officielle WordPress (Apache + PHP)
+    restart: always  # Redémarre automatiquement après plantage ou reboot
+    ports:
+      - 8080:80  # Accès HTTP à l’interface WordPress (personnalisé pour éviter les conflits)
+    environment:
+      WORDPRESS_DB_HOST: db  # Nom du service MySQL défini ci-dessous
+      WORDPRESS_DB_USER: wordpress_user  # Identifiant base de données (à personnaliser)
+      WORDPRESS_DB_PASSWORD: wordpress_pass  # Mot de passe (à sécuriser)
+      WORDPRESS_DB_NAME: wordpress_db  # Nom de la base de données
+    volumes:
+      - wordpress_data:/var/www/html  # Stocke les fichiers WordPress de manière persistante
+
+  db:
+    image: mysql:5.7  # Image officielle MySQL version 5.7 (compatible avec WordPress)
+    restart: always
+    environment:
+      MYSQL_DATABASE: wordpress_db  # Nom de la base MySQL initialisée
+      MYSQL_USER: wordpress_user  # Identifiant utilisateur
+      MYSQL_PASSWORD: wordpress_pass  # Mot de passe utilisateur
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'  # Génère un mot de passe root aléatoire (non accessible par défaut)
+    volumes:
+      - db_data:/var/lib/mysql  # Données MySQL persistantes
+
+volumes:
+  wordpress_data:  # Volume pour les fichiers WordPress
+  db_data:  # Volume pour les données MySQL

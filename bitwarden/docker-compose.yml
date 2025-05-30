@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  bitwarden:
+    image: bitwardenrs/server  # Image communautaire de Bitwarden (devenu Vaultwarden)
+    restart: always  # Redémarre automatiquement après plantage ou redémarrage
+
+    ports:
+      - 8081:80  # Port d’accès à l’interface Web (personnalisé pour éviter les conflits)
+
+    volumes:
+      - /path/to/bitwarden/data:/data  # Volume pour les données chiffrées de l’utilisateur
+
+    environment:
+      WEBSOCKET_ENABLED: 'true'  # Active les websockets (nécessaire pour synchronisation en temps réel)
+      SIGNUPS_ALLOWED: 'true'    # Permet aux utilisateurs de s’inscrire librement (à désactiver en production)

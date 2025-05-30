@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  snipe-mysql:
+    image: mysql:8.0  # Image MySQL officielle (version 8.0)
+    container_name: snipe-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: your_root_password  # Mot de passe root MySQL (à sécuriser)
+      MYSQL_DATABASE: snipeit_db  # Nom de la base de données utilisée par Snipe-IT
+      MYSQL_USER: snipeit_user  # Utilisateur MySQL (personnalisé)
+      MYSQL_PASSWORD: your_user_password  # Mot de passe utilisateur (à sécuriser)
+    volumes:
+      - /path/to/mysql/data:/var/lib/mysql  # Volume persistant pour les données MySQL
+    ports:
+      - "9300:3306"  # Port MySQL exposé (personnalisé)
+    command: --default-authentication-plugin=mysql_native_password  # Permet l’authentification classique
+    networks:
+      - snipe-network
+    restart: unless-stopped
+
+  snipe-it:
+    image: snipe/snipe-it:latest  # Image officielle Snipe-IT
+    container_name: snipe-it
+    depends_on:
+      - snipe-mysql  # Démarre MySQL avant Snipe-IT
+    environment:
+      APP_ENV: production
+      APP_DEBUG: false
+      APP_KEY: base64:your_app_key  # Clé d’application Laravel (à générer en prod)
+      APP_URL: https://example.com  # URL publique de l'application
+      DB_PORT: 3306
+      DB_HOST: snipe-mysql
+      DB_DATABASE: snipeit_db
+      DB_USERNAME: snipeit_user
+      DB_PASSWORD: your_user_password
+      TIMEZONE: Europe/Paris
+    volumes:
+      - /path/to/snipeit/data:/var/lib/snipeit  # Données persistantes Snipe-IT
+    ports:
+      - "9090:80"  # Interface Web Snipe-IT
+    networks:
+      - snipe-network
+    restart: unless-stopped
+
+networks:
+  snipe-network:  # Réseau dédié à la stack Snipe-IT
